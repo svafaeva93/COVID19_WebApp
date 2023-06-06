@@ -25,7 +25,7 @@ def get_data():
         data.append({
             'id': str(result['_id']),
             'Province': result['Province'],
-            'Cases': result['Cases']
+            'Confirmed cases per day': result['Confirmed cases per day']
         })
 
     return jsonify(data)
