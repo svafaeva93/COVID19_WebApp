@@ -1,6 +1,6 @@
 // Define the URL for the JSON file
-const url = 'http://127.0.0.1:5000/daily_cases';
-// http://127.0.0.1:5000/daily_cases
+const url = 'http://127.0.0.1:5000/mortality_rate';
+
 // Functions for each questions asked:
 // calling function which connects the "selDataset" element with the names array from data
 loadOptions();
@@ -14,21 +14,79 @@ loadOptions();
 // updateGaugeChart(0);
 
 // This function connects the names array from data with the 'id' numbers with the "selDataset" element 
-
 function loadOptions() {
-  d3.json(url).then(data => {
-    console.log(data[0]);
-    // var options = data.names;
-    // var select = document.getElementById("selDataset");
-    // for (var i = 0; i < options.length; i++) {
-    //   var option = document.createElement("option");
-    //   option.text = options[i];
-    //   select.add(option);
-    }
-  ).catch(error => {
-    console.log('Error loading data:', error);
-  })
+  d3.json(url)
+    .then(data => {
+      console.log(data);
+
+      // Declare arrays for province and mortality rate
+      var provinces = [];
+      var mortalityRates = [];
+
+      // Iterate over the array of documents
+      data.forEach(document => {
+        var mortalityRate = document["Mortality rate"];
+        var province = document["Province"];
+        console.log("Mortality rate:", mortalityRate);
+        console.log("Province:", province);
+
+        // Push values to respective arrays
+        provinces.push(province);
+        mortalityRates.push(mortalityRate);
+      });
+
+      // Update the trace object
+      const updatedTrace = {
+        x: provinces,
+        y: mortalityRates,
+        type: 'bar',
+        orientation: 'v',
+        width: 0.8,                // Adjust the width of the bars (0.8 represents 80% of the available space)
+      };
+
+      // Update the data array
+      const updatedData = [updatedTrace];
+
+      // Update the layout object (if needed)
+      const updatedLayout = {
+        title: 'Mortality Rate by Province',
+        xaxis: {
+          title: 'Province',
+        },
+        yaxis: {
+          title: 'Mortality Rate',
+          automargin: true,
+          title_standoff: 50,
+        },
+      };
+
+      // Update the chart
+      Plotly.newPlot('plot', updatedData, updatedLayout);
+    })
+    .catch(error => {
+      console.log('Error loading data:', error);
+    });
 }
+
+
+
+// function loadOptions() {
+//   d3.json(url).then(data => {
+//     console.log(data);
+//     var mortality_data = data['Mortality rate'];
+//     var province_data = data['Province'];
+//     console.log(mortality_data);
+//     console.log(province_data);
+//     // var select = document.getElementById("selDataset");
+//     // for (var i = 0; i < options.length; i++) {
+//     //   var option = document.createElement("option");
+//     //   option.text = options[i];
+//     //   select.add(option);
+//     }
+//   ).catch(error => {
+//     console.log('Error loading data:', error);
+//   })
+// }
 
 // // Display the sample metadata, i.e., an individual's demographic information. Display each key-value pair from the metadata JSON object somewhere on the page.
 // function demographic(selectedMetadataIndex) {
@@ -212,6 +270,6 @@ function loadOptions() {
 //     selectedsamplebubbledataIndex = findsample_bubbleValues(samples, parseInt(selectedId));
 //     updateBubbleChart(selectedsamplebubbledataIndex);
 //     updateGaugeChart(selectedMetadataIndex);
-//   }); 
+//   });
 // };
 

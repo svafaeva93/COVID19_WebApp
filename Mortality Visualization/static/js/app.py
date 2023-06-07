@@ -42,10 +42,30 @@ def confirmed_data():
 #Mortality Rate 
 @app.route("/mortality_rate")
 def mortality_data():
-    query = {}
-    fields = {'Province':1, 'Date':1, 'Mortality rate':1}
-    results = dataset_1.find(query, fields)
-    results_list = [convert_object_id(result) for result in results]
+    collection = db['dataset_1']  # Update with the appropriate collection
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$Province",
+                "MortalityRate": {"$max": "$Mortality rate"},
+                "Date": {"$max": "$Date"}
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "Province": "$_id",
+                "Mortality rate": "$MortalityRate"
+            }
+        },
+        {
+            "$sort": {
+                "Mortality rate": -1
+            }
+        }
+    ]
+    results = collection.aggregate(pipeline)
+    results_list = list(results)
 
     return jsonify(results_list)
 
