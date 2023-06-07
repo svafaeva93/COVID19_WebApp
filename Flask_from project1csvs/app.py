@@ -1,40 +1,35 @@
 
-# from flask import Flask, jsonify
-# from pymongo import MongoClient
-
-# app = Flask(__name__)
-
-# Create an instance of MongoClient
+from flask import Flask, jsonify
 from pymongo import MongoClient
+from config import connection_string
 
-# Assign your connection string to a variable
-connection_string = "mongodb+srv://abdyramanovaj:covid19@cluster0.mymgc5e.mongodb.net/"
 
-# Create an instance of MongoClient using the connection string
+# # Create Flask application
+app = Flask(__name__)
+
+# # Create MongoDB client and connect to the database
 client = MongoClient(connection_string)
+# Access the desired database
+db = client.covid_db
 
-# Collection name 
-COVID19_data = client.dataset_1
+# Get the list of database names
+database_names = client.list_database_names()
 
+# Print the database names
+for db_name in database_names:
+    print(db_name)
 
-# @app.route('/')
-# def index():
-#     return 'Hello, World!'
+# # Define a route to retrieve data from MongoDB
+@app.route('/data', methods=['GET'])
+def get_data():
+    # Access a collection and fetch data
+    collection = db.dataset_1
+    data = collection.find()
 
-# # Define API route
-# @app.route('/data', methods=['GET'])
-# def get_data():
-#     data = []
-#     query = {'Province': 'ON'}
-#     results = COVID19_data.find(query)
-#     for result in results:
-#         data.append({
-#             'id': str(result['_id']),
-#             'Province': result['Province'],
-#             'Cases': result['Cases']
-#         })
+#     # Convert data to JSON and return
+    return jsonify(list(data))
 
-#     return jsonify(data)
+# # Run the Flask application
+if __name__ == '__main__':
+    app.run()
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
