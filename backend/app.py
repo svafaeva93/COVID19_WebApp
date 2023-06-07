@@ -1,6 +1,7 @@
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, Response, jsonify, abort
 from pymongo import MongoClient
 from credentials import username, password
+import json
 from pprint import pprint 
 
 app = Flask(__name__)
@@ -54,7 +55,19 @@ def convert_object_id(result):
 @app.route("/vaccines")
 def vaccine_rate():
     query = {}
-    fields = { }
+    results = dataset_3.find(query)
+    results_list = [convert_object_id(result) for result in results]
+
+    return jsonify(results_list)
+
+#Vaccines based on age and gender 
+@app.route("/gender&age")
+def vaccines():
+    query = {}
+    results = dataset_2.find(query)
+    results_list = [convert_object_id(result) for result in results]
+
+    return jsonify(results_list)
 
 
 if __name__ == '__main__' :
