@@ -1,5 +1,5 @@
 // Define the URL for the JSON file
-const url = 'http://127.0.0.1:5000/mortality_rate';
+const url = 'http://127.0.0.1:5000/vaccines';
 
 // Functions for each questions asked:
 // calling function which connects the "selDataset" element with the names array from data
@@ -21,24 +21,24 @@ function loadOptions() {
 
       // Declare arrays for province and mortality rate
       var provinces = [];
-      var mortalityRates = [];
+      var vaccines = [];
 
       // Iterate over the array of documents
       data.forEach(document => {
-        var mortalityRate = document["Mortality rate"];
+        var vaccines= document["Cumulative number of people (Vaccinedose1)"];
         var province = document["Province"];
-        console.log("Mortality rate:", mortalityRate);
+        console.log("Mortality rate:", vaccines);
         console.log("Province:", province);
 
         // Push values to respective arrays
         provinces.push(province);
-        mortalityRates.push(mortalityRate);
+        vaccines.push(vaccines);
       });
 
       // Update the trace object
       const updatedTrace = {
         x: provinces,
-        y: mortalityRates,
+        y: vaccines,
         type: 'bar',
         orientation: 'v',
         width: 0.8,                // Adjust the width of the bars (0.8 represents 80% of the available space)
@@ -49,12 +49,12 @@ function loadOptions() {
 
       // Update the layout object (if needed)
       const updatedLayout = {
-        title: 'Mortality Rate by Province',
+        title: 'Vaccines by Province',
         xaxis: {
           title: 'Province',
         },
         yaxis: {
-          title: 'Mortality Rate',
+          title: 'Vaccines',
           automargin: true,
           title_standoff: 50,
         },
