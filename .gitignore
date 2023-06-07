@@ -49,3 +49,4 @@ Pipfile.lock
 
 # Ignore credentials file
 backend/credentials.py
+Mortality Visualization/static/js/credentials.py
