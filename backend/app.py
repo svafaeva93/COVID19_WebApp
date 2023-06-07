@@ -68,6 +68,26 @@ def mortality_data():
     results = list(dataset_1.aggregate(pipeline))
     return jsonify(results)
 
+@app.route("/vaccinated_people_province")
+def vaccine_data():
+    pipeline = [
+        {
+            '$group': {
+                '_id': '$Province',
+                'cumm_vaccinated_people': { '$sum': '$Cumulative number of people (Vaccinedose1)' }
+            }
+        },
+        {
+            '$sort': {
+                'cumm_vaccinated_people': -1
+            }
+        }
+    ]
+
+    results = list(dataset_3.aggregate(pipeline))
+    return jsonify(results)
+
+
 def convert_object_id(result):
     result['_id'] = str(result['_id'])
     return result
