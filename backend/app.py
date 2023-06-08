@@ -29,7 +29,7 @@ def main_page():
 
 #Confirmed Cases per Day 
 @app.route("/daily_cases")
-def confirmed_data():
+def daily_confirmed_data():
     query = {}
     fields = {'Province':1, 'Date':1, 'Confirmed cases per day':1}
     results = dataset_1.find(query, fields)
@@ -37,21 +37,86 @@ def confirmed_data():
 
     return jsonify(output_list)
 
-#Mortality Rate 
+#Cumulative Confirmed by Province 
+@app.route("/cumulative_cases_province")
+def confirmed_data():
+    pipeline = [
+        {
+            '$group': {
+                '_id': '$Province',
+                'cum_confirmed_cases': { '$sum': '$Cumulative confirmed cases' }
+            }
+        },
+        {
+            '$sort': {
+                'cum_confirmed_cases': -1,
+                'Date':-1
+            }
+        }
+    ]
+
+    results = list(dataset_1.aggregate(pipeline))
+    return jsonify(results)
+
+
+#Mortality Rate Data
+
+# @app.route("/mortality_rate")
+# def mortality_data():
+#     query = {}
+#     fields = {'Province':1, 'Date':1, 'Mortality rate':1}
+#     results = dataset_1.find(query, fields)
+#     results_list = [convert_object_id(result) for result in results]
+
+#     return jsonify(results_list)
+
+#Mortality Rate by Province 
 @app.route("/mortality_rate")
 def mortality_data():
-    query = {}
-    fields = {'Province':1, 'Date':1, 'Mortality rate':1}
-    results = dataset_1.find(query, fields)
-    results_list = [convert_object_id(result) for result in results]
+    pipeline = [
+        {
+            '$group': {
+                '_id': '$Province',
+                'Mortality_rate': { '$max': '$Mortality rate' }
+            }
+        },
+        {
+            '$sort': {
+                'Mortality_rate': -1
+            }
+        }
+    ]
 
-    return jsonify(results_list)
+    results = list(dataset_1.aggregate(pipeline))
+    return jsonify(results)
+
+#Vaccination per Province 
+@app.route("/vaccinated_people_province")
+def vaccine_data():
+    pipeline = [
+        {
+            '$group': {
+                '_id': '$Province',
+                'cumm_vaccinated_people': { '$sum': '$Cumulative number of people (Vaccinedose1)' }
+            }
+        },
+        {
+            '$sort': {
+                'cumm_vaccinated_people': -1,
+                'Date':-1
+            }
+        }
+    ]
+
+    results = list(dataset_3.aggregate(pipeline))
+    return jsonify(results)
+
 
 def convert_object_id(result):
     result['_id'] = str(result['_id'])
     return result
 
-#Vaccination 
+#Vaccination Data 
 @app.route("/vaccines")
 def vaccine_rate():
     query = {}
