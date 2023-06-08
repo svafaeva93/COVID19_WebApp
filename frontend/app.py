@@ -1,4 +1,4 @@
-from flask import Flask, request, Response, jsonify, abort
+from flask import Flask, request, Response, jsonify, abort, render_template
 from pymongo import MongoClient
 from credentials import username, password
 import json
@@ -26,9 +26,7 @@ dataset_3 = db['dataset_3']
 #Welcome Page 
 @app.route("/")
 def main_page():
-    return "<h2>Main Page for Flask API</h2>"
-
-
+    return render_template ("index.html")
 
 #Confirmed Cases per Day 
 @app.route("/daily_cases")
