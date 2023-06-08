@@ -2,14 +2,15 @@ from flask import Flask, request, Response, jsonify, abort
 from pymongo import MongoClient
 from credentials import username, password
 import json
-from pprint import pprint 
+from pprint import pprint
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
 # Define your credentials and DBname
-client = MongoClient(f'mongodb+srv://{username}:{password}@cluster0.mymgc5e.mongodb.net/')
+client = MongoClient(
+    f'mongodb+srv://{username}:{password}@cluster0.mymgc5e.mongodb.net/')
 
 # Test if connected to the MongoDB Atlas
 # print(client.list_database_names())
@@ -18,28 +19,39 @@ dbname = 'covid_db'
 db = client[dbname]  # MongoDB database
 print(db.list_collection_names())
 
-#assign each collection to a variable 
+# assign each collection to a variable
 
 dataset_1 = db['dataset_1']
 dataset_2 = db['dataset_2']
 dataset_3 = db['dataset_3']
 
-#Welcome Page 
+# Welcome Page
+
+
 @app.route("/")
 def main_page():
     return "<h2>Main Page for Flask API</h2>"
 
-#Confirmed Cases per Day 
+# Confirmed Cases per Day
+
+
 @app.route("/daily_cases")
 def confirmed_data():
     query = {}
-    fields = {'Province':1, 'Date':1, 'Confirmed cases per day':1}
+    fields = {'Province': 1, 'Date': 1, 'Confirmed cases per day': 1}
     results = dataset_1.find(query, fields)
     output_list = [convert_object_id(result) for result in results]
-
     return jsonify(output_list)
 
-#Mortality Rate 
+
+@app.route("/dropdown_province")
+@app.route("/dropdown_province")
+def dropdown_province_data():
+    collection = db['dataset_1']
+    provinces = collection.distinct("Province", {})
+    return jsonify(provinces)
+
+# Mortality Rate
 @app.route("/mortality_rate")
 def mortality_data():
     collection = db['dataset_1']  # Update with the appropriate collection
@@ -69,11 +81,14 @@ def mortality_data():
 
     return jsonify(results_list)
 
+
 def convert_object_id(result):
     result['_id'] = str(result['_id'])
     return result
 
-#Vaccination 
+# Vaccination
+
+
 @app.route("/vaccines")
 def vaccine_rate():
     query = {}
@@ -82,16 +97,56 @@ def vaccine_rate():
 
     return jsonify(results_list)
 
-#Vaccines based on age and gender 
+# Vaccines based on age and gender
+
+
 @app.route("/gender&age")
 def vaccines():
-    query = {}
-    results = dataset_2.find(query)
-    results_list = [convert_object_id(result) for result in results]
+    collection = db['dataset_2']
+    # Define the grouping pipeline
+    pipeline = [
+        {
+            "$group": {
+                "_id": {
+                    "Age": "$Age",
+                    "Sex": {"$toString": "$Sex"}
+                },
+                "TotalVaccinedose1": {"$sum": "$Cumulative number of people (Vaccinedose1)"}
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "Age": "$_id.Age",
+                "Sex": "$_id.Sex",
+                "TotalVaccinedose1": 1
+            }
+        },
+        {
+            "$sort": {
+                "Age": 1
+            }
+        }
+    ]
 
-    return jsonify(results_list)
+    results = collection.aggregate(pipeline)
+    # results_list = list(results)
+
+    # return jsonify(results_list)
+    # Convert the result to a list
+    grouped_data = list(results)
+
+# Process the grouped data and update the "Sex" field
+    for group in grouped_data:
+        if group["Sex"] == "false":
+            group["Sex"] = "f"
+
+    return jsonify(grouped_data)
+    # results = dataset_2.find(query)
+    # results_list = [convert_object_id(result) for result in results]
+
+    # return jsonify(results_list)
 
 
-if __name__ == '__main__' :
+if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
