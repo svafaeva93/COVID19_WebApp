@@ -3,13 +3,9 @@ const url = 'http://127.0.0.1:5000/vaccinated_people_province';
 const url3 = 'http://127.0.0.1:5000/dropdown_province';
 
 // Calling the functions
-loadOptions();
+// loadOptions();
 vaccinations();
 
-// Functions for each question asked:
-function loadOptions() {
-  // Function implementation goes here
-}
 function vaccinations() {
   d3.json(url)
     .then(data => {
@@ -59,20 +55,19 @@ function vaccinations() {
       console.log('Error loading data:', error);
     });
 }
-function loadOptions() {
-  d3.json(url3)
-    .then(data => {
-      console.log(data);
-      var options = data;
-      var select = document.getElementById("selDataset");
-      for (var i = 0; i < options.length; i++) {
-        var option = document.createElement("option");
-        option.text = options[i];
-        select.add(option);
-      }
-    })
-    .catch(error => {
-      console.log('Error loading data:', error);
-    });
-}
+// // function loadOptions() {
+//   d3.json(url3)
+//     .then(data => {
+//       console.log(data);
+//       var options = data;
+//       var select = document.getElementById("selDataset");
+//       for (var i = 0; i < options.length; i++) {
+//         var option = document.createElement("option");
+//         option.text = options[i];
+//         select.add(option);
+//       }
+//     })
+//     .catch(error => {
+//       console.log('Error loading data:', error);
+//     });
 

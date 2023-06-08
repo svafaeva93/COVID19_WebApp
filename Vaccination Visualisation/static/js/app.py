@@ -3,9 +3,10 @@ from pymongo import MongoClient
 from credentials import username, password
 import json
 from pprint import pprint 
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+CORS(app)
 # Define your credentials and DBname
 client = MongoClient(f'mongodb+srv://{username}:{password}@cluster0.mymgc5e.mongodb.net/')
 
