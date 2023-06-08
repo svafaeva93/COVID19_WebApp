@@ -79,7 +79,8 @@ def vaccine_data():
         },
         {
             '$sort': {
-                'cumm_vaccinated_people': -1
+                'cumm_vaccinated_people': -1,
+                'Date':-1
             }
         }
     ]
