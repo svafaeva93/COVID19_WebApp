@@ -36,9 +36,6 @@ def confirmed_data():
     output_list = [convert_object_id(result) for result in results]
 
     return jsonify(output_list)
-
-
-
 #Mortality Rate 
 # @app.route("/mortality_rate")
 # def mortality_data():
