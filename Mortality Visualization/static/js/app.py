@@ -72,7 +72,7 @@ def mortality_data():
         },
         {
             "$sort": {
-                "Mortality rate": -1
+                "Mortality rate": 1
             }
         }
     ]

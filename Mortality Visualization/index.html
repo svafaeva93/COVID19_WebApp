@@ -47,7 +47,16 @@
       </div>
     </div>
   </div>
+
   <!-- <div id="plot"></div> -->
+  <!-- Add a container for the chart -->
+  <div id="chart-container"></div>
+  <!-- Add a dropdown menu for sorting -->
+  <label for="sort-dropdown">Sort Order:</label>
+  <select id="sort-dropdown" onchange="changeOrder(this.value)">
+    <option value="ascending">Ascending</option>
+    <option value="descending">Descending</option>
+  </select>
   <div id="plot2"></div>
   <script src="./static/js/app.js"></script>
   <!-- <script src="./static/js/bonus.js"></script> -->
