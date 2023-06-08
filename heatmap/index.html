@@ -96,12 +96,12 @@
       }
 
       // Load the GeoJSON file
-      $.getJSON('canada.json', function(geojson) {
+      $.getJSON('canada.geojson', function(geojson) {
         L.geoJSON(geojson, {
           style: function(feature) {
             // Find the corresponding data for the current province
             var provinceData = data.find(function(province) {
-              return province._id === feature.properties.name;
+              return province._id === feature.properties.prov_name_en;
             });
 
             // Get the confirmed cases for the province
@@ -122,12 +122,12 @@
           onEachFeature: function(feature, layer) {
             // Create a popup for each province showing the confirmed cases
             var provinceData = data.find(function(province) {
-              return province._id === feature.properties.name;
+              return province._id === feature.properties.prov_name_en;
             });
 
             var confirmedCases = provinceData ? provinceData.cum_confirmed_cases : 0;
 
-            var popupContent = '<b>' + feature.properties.name + '</b><br>Cumulative Confirmed Cases: ' + confirmedCases;
+            var popupContent = '<b>' + feature.properties.prov_name_en + '</b><br>Cumulative Confirmed Cases: ' + confirmedCases;
             layer.bindPopup(popupContent);
           }
         }).addTo(map);
