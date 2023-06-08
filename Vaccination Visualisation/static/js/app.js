@@ -1,280 +1,43 @@
-// Define the URL for the JSON file
-const url = 'http://127.0.0.1:5000/vaccinated_people_province';
-
-// This function connects the names array from data with the 'id' numbers with the "selDataset" element
-function loadOptions() {
-  d3.json(url)
-    .then(data => {
-      console.log(data);
-
-      // Add your code here to process the data and populate the "selDataset" element with options
-      // For example, if the data contains an array of names, you can iterate over the array and create <option> elements
-      // using D3.js or plain JavaScript, and append them to the "selDataset" element.
-    })
-    .catch(error => {
-      console.log('Error loading JSON data:', error);
+function processAndVisualizeData(data) {
+    const url = 'http://127.0.0.1:5000/vaccinated_people_province';
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        processAndVisualizeData(data);
+      })
+      .catch(error => {
+        console.log('Error loading data:', error);
+      });
+    var provinces = [];
+    var vaccinatedPeople = [];
+    data.forEach(document => {
+      var vaccinated = document["cumm_vaccinated_people"];
+      var province = document["_id"];
+      console.log("Vaccinated People:", vaccinated);
+      console.log("Province:", province);
+      provinces.push(province);
+      vaccinatedPeople.push(vaccinated);
     });
-}
-
-// Call the loadOptions function to initiate the data loading process
-loadOptions();
-
-
-//       // Declare arrays for province and mortality rate
-//       var provinces = [];
-//       var vaccines = [];
-
-//       // Iterate over the array of documents
-//       data.forEach(document => {
-//         var vaccines= document["Cumulative number of people (Vaccinedose1)"];
-//         var province = document["Province"];
-//         console.log("Mortality rate:", vaccines);
-//         console.log("Province:", province);
-
-//         // Push values to respective arrays
-//         provinces.push(province);
-//         vaccines.push(vaccines);
-//       });
-
-//       // Update the trace object
-//       const updatedTrace = {
-//         x: provinces,
-//         y: vaccines,
-//         type: 'bar',
-//         orientation: 'v',
-//         width: 0.8,                // Adjust the width of the bars (0.8 represents 80% of the available space)
-//       };
-
-//       // Update the data array
-//       const updatedData = [updatedTrace];
-
-//       // Update the layout object (if needed)
-//       const updatedLayout = {
-//         title: 'Vaccines by Province',
-//         xaxis: {
-//           title: 'Province',
-//         },
-//         yaxis: {
-//           title: 'Vaccines',
-//           automargin: true,
-//           title_standoff: 50,
-//         },
-//       };
-
-//       // Update the chart
-//       Plotly.newPlot('plot', updatedData, updatedLayout);
-//     })
-//     .catch(error => {
-//       console.log('Error loading data:', error);
-//     });
-// }
-
-
-
-
-
-
-
-// function loadOptions() {
-//   d3.json(url).then(data => {
-//     console.log(data);
-//     var mortality_data = data['Mortality rate'];
-//     var province_data = data['Province'];
-//     console.log(mortality_data);
-//     console.log(province_data);
-//     // var select = document.getElementById("selDataset");
-//     // for (var i = 0; i < options.length; i++) {
-//     //   var option = document.createElement("option");
-//     //   option.text = options[i];
-//     //   select.add(option);
-//     }
-//   ).catch(error => {
-//     console.log('Error loading data:', error);
-//   })
-// }
-
-// // Display the sample metadata, i.e., an individual's demographic information. Display each key-value pair from the metadata JSON object somewhere on the page.
-// function demographic(selectedMetadataIndex) {
-//   d3.json(url).then(data => {
-//     const metadata = data.metadata; // Access the metadata from the JSON response
-//     console.log(metadata[selectedMetadataIndex]);
-//     // Select the metadata element using its id
-//     const metadataElement = d3.select("#sample-metadata");
-//     // Clear the existing contents (if any)
-//     metadataElement.html("");
-//     // Iterate over the metadata object and append the information to the element
-//     Object.entries(metadata[selectedMetadataIndex]).forEach(([key, value]) => {
-//       metadataElement
-//         .append("p")
-//         .text(`${key}: ${value}`);
-//     });
-//   });
-// }
-
-// // Extraction the index values with respect to the target values and calling the respective functions in optionChanged function
-// // Created function for metadata
-// function findValue(metadata, target) {
-//   for (let i = 0; i < metadata.length; i++) {
-//     if (metadata[i].id === target) {
-//       return i; // Match found
-//     }
-//   }
-//   return -1; // Match not found
-// }
-// // Created function for bar graph in regards to sample values
-// function findsample_barValues(samples, target){
-//   for (let i = 0; i < samples.length; i++) {
-//     if (parseInt(samples[i].id) === target) {
-//       return i; // Match found
-//     }
-//   }
-//   return -1; // Match not found
-// }
-// // Created function for bubble graph in regards to sample values
-// function findsample_bubbleValues(samples, target){
-//   for (let i = 0; i < samples.length; i++) {
-//     if (parseInt(samples[i].id) === target) {
-//       return i; // Match found
-//     }
-//   }
-//   return -1; // Match not found
-// }
-
-// // To update bar plot when a new sample is selected.
-// function updateBarChart(selectedsampledataIndex) {
-//   d3.json(url).then(data => {
-//     const samples = data.samples;
-//     // Find the selected sample
-//     const selectedSampleData = samples[selectedsampledataIndex];
-//     // Get the top 10 OTUs for the selected sample
-//     const top10OTUs = selectedSampleData.sample_values.slice(0, 10).reverse();
-//     const top10IDs = selectedSampleData.otu_ids.slice(0, 10).reverse();
-//     const top10Labels = selectedSampleData.otu_labels.slice(0, 10);
-//     // Update the trace object
-//     const updatedTrace = {
-//       x: top10OTUs,
-//       y: top10IDs.map(id => `OTU ${id}`),
-//       type: 'bar',
-//       orientation: 'h',
-//     };
-//     // Update the data array
-//     const updatedData = [updatedTrace];
-//     // Update the layout object (if needed)
-//     const updatedLayout = {
-//       title: 'Top 10 OTUs',
-//       xaxis: {
-//         title: 'Sample Values',
-//       },
-//       yaxis: {
-//         title: 'OTU IDs',
-//         automargin: true,
-//       },
-//     };
-//     // Update the chart
-//     Plotly.newPlot('plot', updatedData, updatedLayout);
-//   }).catch(error => {
-//     console.log('Error loading data:', error);
-//   });
-// }
-
-// // To update bubble plot when a new sample is selected.
-// function updateBubbleChart(selectedsamplebubbledataIndex) {
-//   d3.json(url).then(data => {
-//     const samples = data.samples;
-//     // Find the selected sample
-//     const selectedSampleData = samples[selectedsamplebubbledataIndex];
-//     const otuIDs = selectedSampleData.otu_ids;
-//     const sampleValues = selectedSampleData.sample_values;
-//     const otuLabels = selectedSampleData.otu_labels;
-//     // Update the trace object
-//     const updatedTrace = {
-//       x: otuIDs,
-//       y: sampleValues,
-//       text: otuLabels,
-//       mode: 'markers',
-//       marker: {
-//         size: sampleValues,
-//         color: otuIDs,
-//         colorscale: 'Viridis',
-//       },
-//     };
-//     // Update the data array
-//     const updatedData = [updatedTrace];
-//     // Update the layout object (if needed)
-//     const updatedLayout = {
-//       title: 'Bubble Chart',
-//       xaxis: {
-//         title: 'OTU IDs',
-//       },
-//       yaxis: {
-//         title: 'Sample Values',
-//       },
-//       showlegend: false,
-//     };
-//     // Update the chart
-//     Plotly.newPlot('plot2', updatedData, updatedLayout);
-//   }).catch(error => {
-//     console.log('Error loading data:', error);
-//   });
-// }
-
-// // This function is created to call the Gauge chart
-// function updateGaugeChart(selectedMetadataIndex) {
-//   d3.json(url).then(data => {
-//     const metadata = data.metadata;
-//     const selectedWashingFrequency = metadata[selectedMetadataIndex].wfreq;
-//     // Update the gauge chart
-//     const gaugeData = [
-//       {
-//         type: "indicator",
-//         mode: "gauge+number",
-//         value: selectedWashingFrequency,
-//         title: {
-//           text: "Belly Button Washing Frequency<br><sub>Scrubs per Week</sub>",
-//           font: { size: 24 },
-//         },
-//         gauge: {
-//           axis: { range: [null, 9], tickwidth: 1, tickcolor: "darkblue" },
-//           bar: { color: "darkblue" },
-//           bgcolor: "white",
-//           borderwidth: 2,
-//           bordercolor: "gray",
-//           steps: [
-//             { range: [0, 1], color: "#f8f7ff" },
-//             { range: [1, 2], color: "#ede9ff" },
-//             { range: [2, 3], color: "#e0d6ff" },
-//             { range: [3, 4], color: "#d3ceff" },
-//             { range: [4, 5], color: "#c6c5ff" },
-//             { range: [5, 6], color: "#b9b8ff" },
-//             { range: [6, 7], color: "#acacff" },
-//             { range: [7, 8], color: "#9f9eff" },
-//             { range: [8, 9], color: "#9291ff" },
-//           ],
-//         },
-//       },
-//     ];
-
-//     const gaugeLayout = { width: 500, height: 400, margin: { t: 0, b: 0 } };
-
-//     Plotly.newPlot('gauge', gaugeData, gaugeLayout);
-//   }).catch(error => {
-//     console.log('Error loading data:', error);
-//   });
-// }
-
-// // To update all the data and plots when a new sample is selected.
-// function optionChanged(selectedId) {
-//   // Update the demographic information
-//   d3.json(url).then(data => {
-//     const metadata = data.metadata;
-//     selectedMetadataIndex = findValue(metadata, parseInt(selectedId));
-//     demographic(selectedMetadataIndex);
-//     const samples = data.samples;
-//     selectedsampledataIndex = findsample_barValues(samples, parseInt(selectedId));
-//     updateBarChart(selectedsampledataIndex);
-//     selectedsamplebubbledataIndex = findsample_bubbleValues(samples, parseInt(selectedId));
-//     updateBubbleChart(selectedsamplebubbledataIndex);
-//     updateGaugeChart(selectedMetadataIndex);
-//   });
-// };
-
+    const updatedTrace = {
+      x: provinces,
+      y: vaccinatedPeople,
+      type: 'bar',
+      orientation: 'v',
+      width: 0.8,
+    };
+    const updatedData = [updatedTrace];
+    const updatedLayout = {
+      title: 'Vaccinated People by Province',
+      xaxis: {
+        title: 'Province',
+      },
+      yaxis: {
+        title: 'Vaccinated People',
+        automargin: true,
+        title_standoff: 50,
+      },
+    };
+    Plotly.newPlot('plot', updatedData, updatedLayout);
+  }
+  
