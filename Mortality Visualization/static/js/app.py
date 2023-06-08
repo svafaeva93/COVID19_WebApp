@@ -52,6 +52,8 @@ def dropdown_province_data():
     return jsonify(provinces)
 
 # Mortality Rate
+
+
 @app.route("/mortality_rate")
 def mortality_data():
     collection = db['dataset_1']  # Update with the appropriate collection
@@ -147,6 +149,35 @@ def vaccines():
 
     # return jsonify(results_list)
 
+
+@app.route("/age")
+def vaccines_ages():
+    collection = db['dataset_2']
+    # Define the grouping pipeline
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$Age",
+                "TotalVaccinedose1": {"$sum": "$Cumulative number of people (Vaccinedose1)"}
+            }
+        },
+        {
+            "$project": {
+                "_id": 0,
+                "Age": "$_id",
+                "TotalVaccinedose1": 1
+            }
+        },
+        {
+            "$sort": {
+                "Age": 1
+            }
+        }
+    ]
+
+    results = collection.aggregate(pipeline)
+    results_list = list(results)
+    return jsonify(results_list)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
