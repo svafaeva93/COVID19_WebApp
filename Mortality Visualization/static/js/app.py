@@ -113,8 +113,6 @@ def convert_object_id(result):
     return result
 
 # Vaccination
-
-
 @app.route("/vaccines")
 def vaccine_rate():
     query = {}

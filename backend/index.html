@@ -3,6 +3,9 @@
 <head>
   <title>Province Heatmap</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     #map {
       height: 500px;
@@ -10,8 +13,32 @@
   </style>
 </head>
 <body>
+  <!-- RILEY -->
+  <div class="well">
+    <h5>Test Subject ID No.:</h5>
+    <select id="selDataset" onchange="optionChanged(this.value)">
+    </select>
+  </div>
+  <!-- TARUNA -->
+  <!-- Add a container for the chart -->
+  <div id="chart-container"></div>
+  <!-- Add a dropdown menu for sorting -->
+  <label for="sort-dropdown">Sort Order:</label>
+  <select id="sort-dropdown" onchange="changeOrder(this.value)">
+    <option value="ascending">Ascending</option>
+    <option value="descending">Descending</option>
+  </select>
+  <div id="plot2"></div>
+  <div id="chart-container2">
+    <canvas id="myChart"></canvas>
+  </div>
+  <!-- JIBEK -->
+  <div class="col-md-5">
+    <div id="bar"></div>
+    <div id="plot"></div>
+  </div>
+  <script src="./static/js/app.js"></script>
   <div id="map"></div>
-
   <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chroma-js@2.1.0/chroma.min.js"></script>
