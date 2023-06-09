@@ -118,11 +118,12 @@ function updateVaccineNumbers(selectedProvince) {
   var demographicInfo = d3.select("#sample-metadata");
   demographicInfo.html(""); // Clear previous content
 
-  demographicInfo.append("h5").text("Vaccine Numbers in " + selectedProvince + ":");
-  filteredData.forEach(data => {
-    var formattedVaccine = data.vaccine.toLocaleString(); // Format the vaccinated number with commas or periods
-    demographicInfo.append("p").text(data.date + ": " + formattedVaccine);
-  });
+  demographicInfo.append("h5").text("Number of vaccinated people in " + selectedProvince + ":");
+
+  // Display only the sorted last value
+  var lastData = filteredData[filteredData.length - 1];
+  var formattedVaccine = lastData.vaccine.toLocaleString(); // Format the vaccinated number with commas or periods
+  demographicInfo.append("p").text(lastData.date + ": " + formattedVaccine);
 }
 
 // Event listener for province dropdown change
