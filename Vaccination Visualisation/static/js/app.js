@@ -55,7 +55,6 @@ vaccines();
 //       console.log('Error loading data:', error);
 //     });
 // }
-
 function vaccines() {
   d3.json(url2)
     .then(data => {
@@ -63,13 +62,17 @@ function vaccines() {
       // Declare arrays for province and vaccinations
       var provinces = [];
       var vaccines = [];
-      var dates=[]
+      var dates = [];
 
       // Iterate over the array of documents
       data.forEach(document => {
-        var vaccination = document["Cumulative number of people (Vaccinedose1)"]; 
+        var vaccination = document["Cumulative number of people (Vaccinedose1)"];
         var province = document["Province"];
-        var date = new Date(document["Date"]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        var date = new Date(document["Date"]).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric'
+        });
         console.log("Vaccinated", vaccination);
         console.log("Date:", date);
         console.log("Province:", province);
@@ -78,67 +81,82 @@ function vaccines() {
         vaccines.push(vaccination);
         dates.push(date);
       });
-      // Create a dropdown menu for selecting dates
-      var dropdown = d3.select("#dropdown");
-      dates.forEach(date => {
-      dropdown.append("option").text(date);
-         });
-        // Update the chart based on the selected date
-        function updateChart(selectedDate) {
-        var filteredProvinces = [];
-        var filteredVaccinations = [];
-       // Filter the data based on the selected date
-       data.forEach(document => {
-        if (new Date(document["Date"]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) === selectedDate) {
-          filteredProvinces.push(document["Province"]);
-          filteredVaccinations.push(document["Cumulative number of people (Vaccinedose1)"]);
-        }
+
+      // Create the province dropdown menu
+      var provinceDropdown = d3.select("#provinceDropdown");
+      var uniqueProvinces = Array.from(new Set(provinces)); // Get unique provinces
+      uniqueProvinces.forEach(province => {
+        provinceDropdown.append("option").text(province);
       });
-          // Update the trace object
-          const updatedTrace = {
-            x: filteredVaccinations,
-            y: filteredProvinces,
-            type: 'bar',
-            orientation: 'h',
-            width: 0.8,
-            marker: {
-              color: 'rgba(0, 128, 0, 0.8)'
-            }
-          };
-      // Update the data array
-      const updatedData = [updatedTrace];
-      // Update the layout object
-      const updatedLayout = {
-        title: 'Vaccinated People by Province',
-        xaxis: {
-          title: 'Vaccinated People'
-        },
-        yaxis: {
-          title: 'Province',
-          automargin: true,
-          title_standoff: 50
-        }
-      };
-      Plotly.newPlot('plot2', updatedData, updatedLayout);
-    }
 
-    // Initial chart update
-    updateChart(dates[0]);
+      // Create the date dropdown menu
+      var dateDropdown = d3.select("#dropdown");
+      dates.forEach(date => {
+        dateDropdown.append("option").text(date);
+      });
 
-    // Event listener for dropdown change
-    dropdown.on("change", function() {
-      var selectedDate = d3.select(this).property("value");
-      updateChart(selectedDate);
+      // Update the chart based on the selected province and date
+      function updateChart(selectedProvince, selectedDate) {
+        var filteredVaccinations = [];
+        dates.forEach((date, index) => {
+          if (
+            (selectedProvince === "All Provinces" || provinces[index] === selectedProvince) &&
+            (selectedDate === "All Dates" || date === selectedDate)
+          ) {
+            filteredVaccinations.push(vaccines[index]);
+          }
+        });
+
+        // Update the trace object
+        const updatedTrace = {
+          x: filteredVaccinations,
+          y: uniqueProvinces,
+          type: 'bar',
+          orientation: 'h',
+          width: 0.8,
+          marker: {
+            color: 'rgba(0, 128, 0, 0.8)'
+          }
+        };
+
+        // Update the data array
+        const updatedData = [updatedTrace];
+
+        // Update the layout object
+        const updatedLayout = {
+          title: 'Vaccinated People by Province',
+          xaxis: {
+            title: 'Vaccinated People'
+          },
+          yaxis: {
+            title: 'Province',
+            automargin: true,
+            title_standoff: 50
+          }
+        };
+
+        Plotly.newPlot('plot2', updatedData, updatedLayout);
+      }
+
+      // Initial chart update
+      updateChart("All Provinces", "All Dates");
+
+      // Event listener for province dropdown change
+      provinceDropdown.on("change", function () {
+        var selectedProvince = d3.select(this).property("value");
+        var selectedDate = dateDropdown.property("value");
+        updateChart(selectedProvince, selectedDate);
+      });
+
+      // Event listener for date dropdown change
+      dateDropdown.on("change", function () {
+        var selectedProvince = provinceDropdown.property("value");
+        var selectedDate = d3.select(this).property("value");
+        updateChart(selectedProvince, selectedDate);
+      });
+
+    })
+    .catch(error => {
+      console.log('Error loading data:', error);
     });
-
-  })
-  .catch(error => {
-    console.log('Error loading data:', error);
-  });
 }
-
-
-
-
-
-
