@@ -22,10 +22,10 @@ function chooseColor(name) {
   else if (name == "Quebec") return "blue";
   else if (name == "New Brunswick") return "cyan";
   else if (name == "Nova Scotia") return "brown";
-  else if (name == "Newfounland and Labrador") return "aquamarine";
+  else if (name == "Newfoundland and Labrador") return "deepskyblue";
   else if (name == "Prince Edward Island") return "coral";
   else if (name == "Northwest Territories") return "sienna";
-  else if (name == "Yukon") return "orchid";
+  else if (name == "Yukon Territory") return "salmon";
   else if (name == "Nunavut") return "lime";
   else return "black";
 }
