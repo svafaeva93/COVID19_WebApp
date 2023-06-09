@@ -54,6 +54,30 @@ def dropdown_province_data():
 # Mortality Rate
 
 
+@app.route("/mortality_rate_date")
+def mortality_rate_date():
+    collection = db['dataset_1']  # Update with the appropriate collection
+    pipeline = [
+        {
+            "$project": {
+                "_id": 0,
+                "Province": "$Province",
+                "Date": "$Date",
+                "Mortality rate": "$Mortality rate"
+            }
+        },
+        {
+            "$sort": {
+                "Date": 1
+            }
+        }
+    ]
+    results = collection.aggregate(pipeline)
+    results_list = list(results)
+
+    return jsonify(results_list)
+
+
 @app.route("/mortality_rate")
 def mortality_data():
     collection = db['dataset_1']  # Update with the appropriate collection
@@ -132,10 +156,6 @@ def vaccines():
     ]
 
     results = collection.aggregate(pipeline)
-    # results_list = list(results)
-
-    # return jsonify(results_list)
-    # Convert the result to a list
     grouped_data = list(results)
 
 # Process the grouped data and update the "Sex" field
@@ -144,10 +164,6 @@ def vaccines():
             group["Sex"] = "f"
 
     return jsonify(grouped_data)
-    # results = dataset_2.find(query)
-    # results_list = [convert_object_id(result) for result in results]
-
-    # return jsonify(results_list)
 
 
 @app.route("/age")
@@ -178,6 +194,7 @@ def vaccines_ages():
     results = collection.aggregate(pipeline)
     results_list = list(results)
     return jsonify(results_list)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

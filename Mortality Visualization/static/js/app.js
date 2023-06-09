@@ -10,6 +10,8 @@ loadOptions();
 gender_age();
 mortality_new();
 vaccine_age();
+pie_age;
+
 function vaccine_age() {
   d3.json(url4)
     .then(data => {
@@ -58,8 +60,6 @@ function vaccine_age() {
       console.log('Error loading data:', error);
     });
 }
-
-
 
 function gender_age() {
   d3.json(url2)
@@ -269,6 +269,44 @@ function mortality_new() {
     // Update the chart
     Plotly.react('chart-container', data, layout);
   }
+}
+
+function pie_age() {
+  d3.json(url4)
+    .then(data => {
+      console.log(data);
+
+      // Declare arrays for vaccine and Age
+      var totalVaccinedoses1 = [];
+      var ages = [];
+
+      // Iterate over the array of documents
+      data.forEach(document => {
+        var totalVaccinedose1 = document["TotalVaccinedose1"];
+        var age = document["Age"];
+        console.log("TotalVaccinedose1:", totalVaccinedose1);
+        console.log("Age:", age);
+
+        totalVaccinedoses1.push(totalVaccinedose1);
+        ages.push(age);
+      });
+
+      // Create the pie chart
+      const ctx = document.getElementById('myChart').getContext('2d');
+      const myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ages,
+          datasets: [{
+            data: totalVaccinedoses1,
+            backgroundColor: ['red', 'green', 'blue', 'orange'], // Specify colors for each segment
+          }]
+        },
+        options: {
+          responsive: true
+        }
+      });
+    });
 }
 
   
