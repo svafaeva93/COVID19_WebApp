@@ -1,155 +1,16 @@
-// Define the URL for the JSON file
+// TARUNA CODE///////////STARTS
 const url = 'http://127.0.0.1:5000/mortality_rate';
-const url2 = 'http://127.0.0.1:5000/gender&age';
-const url3 = 'http://127.0.0.1:5000/dropdown_province'
-const url4 = 'http://127.0.0.1:5000/age'
+const url2 = 'http://127.0.0.1:5000/mortalityrate';
+const url3 = 'http://127.0.0.1:5000/vaccinated_people_province';
+const url4 = 'http://127.0.0.1:5000/age';
 
-// Functions for each questions asked:
-// calling function which connects the "selDataset" element with the names array from data
-// loadOptions();
-// gender_age();
+// Calling the functions
+init();
 mortality_new();
-vaccine_age();
 pie_age();
+vaccinations();
 
-function vaccine_age() {
-  d3.json(url4)
-    .then(data => {
-      console.log(data);
-
-      // Declare arrays for vaccine and Age
-      var totalVaccinedoses1 = [];
-      var ages = [];
-
-      // Iterate over the array of documents
-      data.forEach(document => {
-        var totalVaccinedose1 = document["TotalVaccinedose1"];
-        var age = document["Age"];
-        console.log("TotalVaccinedose1:", totalVaccinedose1);
-        console.log("Age:", age);
-
-        totalVaccinedoses1.push(totalVaccinedose1);
-        ages.push(age);
-      });
-
-      // Create trace for bar chart
-      var trace = {
-        x: ages,
-        y: totalVaccinedoses1,
-        type: 'bar'
-      };
-
-      // Define the data array
-      var data = [trace];
-
-      // Define the layout
-      var layout = {
-        title: 'Total Vaccinedose1 by Age',
-        xaxis: {
-          title: 'Age'
-        },
-        yaxis: {
-          title: 'Total Vaccinedose1'
-        }
-      };
-
-      // Plot the chart
-      Plotly.newPlot('plot', data, layout);
-    })
-    .catch(error => {
-      console.log('Error loading data:', error);
-    });
-}
-
-// function gender_age() {
-//   d3.json(url2)
-//     .then(data => {
-//       console.log(data);
-
-//       // Declare arrays for Male, Female, and Age
-//       var totalVaccinedose1Male = [];
-//       var totalVaccinedose1Female = [];
-//       var ages = [];
-
-//       // Iterate over the array of documents
-//       data.forEach(document => {
-//         var totalVaccinedose1 = document["TotalVaccinedose1"];
-//         var age = document["Age"];
-//         var sex = document["Sex"];
-//         console.log("TotalVaccinedose1:", totalVaccinedose1);
-//         console.log("Age:", age);
-//         console.log("Sex:", sex);
-
-//         // Push values to respective arrays based on sex
-//         if (sex === "m") {
-//           totalVaccinedose1Male.push(totalVaccinedose1);
-//           totalVaccinedose1Female.push(0);
-//         } else if (sex === "f") {
-//           totalVaccinedose1Male.push(0);
-//           totalVaccinedose1Female.push(totalVaccinedose1);
-//         } else {
-//           totalVaccinedose1Male.push(0);
-//           totalVaccinedose1Female.push(0);
-//         }
-
-//         ages.push(age);
-//       });
-
-//       // Create traces for Male and Female bars
-//       var traceMale = {
-//         x: ages,
-//         y: totalVaccinedose1Male,
-//         name: 'Male',
-//         type: 'bar'
-//       };
-
-//       var traceFemale = {
-//         x: ages,
-//         y: totalVaccinedose1Female,
-//         name: 'Female',
-//         type: 'bar'
-//       };
-
-//       // Define the data array
-//       var data = [traceMale, traceFemale];
-
-//       // Define the layout
-//       var layout = {
-//         title: 'Total Vaccinedose1 by Age and Sex',
-//         xaxis: {
-//           title: 'Age'
-//         },
-//         yaxis: {
-//           title: 'Total Vaccinedose1'
-//         },
-//         barmode: 'stack'
-//       };
-
-//       // Plot the chart
-//       Plotly.newPlot('plot2', data, layout);
-//     })
-//     .catch(error => {
-//       console.log('Error loading data:', error);
-//     });
-// }
-// This function connects the names array from data with the 'id' numbers with the "selDataset" element 
-// function loadOptions() {
-//   d3.json(url3)
-//     .then(data => {
-//       console.log(data);
-//       var options = data;
-//       var select = document.getElementById("selDataset");
-//       for (var i = 0; i < options.length; i++) {
-//         var option = document.createElement("option");
-//         option.text = options[i];
-//         select.add(option);
-//       }
-//     })
-//     .catch(error => {
-//       console.log('Error loading data:', error);
-//     });
-// }
-
+// Ploting the graphs using plotly and Chart.JS
 function mortality_new() {
   d3.json(url)
     .then(data => {
@@ -212,7 +73,7 @@ function mortality_new() {
       }
 
       const sortDropdown = document.getElementById('sort-dropdown');
-      sortDropdown.onchange = function() {
+      sortDropdown.onchange = function () {
         const selectedOption = this.value;
         console.log('Selected option:', selectedOption);
         let sortedData = [...data];
@@ -350,3 +211,91 @@ function pie_age() {
       chartCanvas.style.height = '400px';
     });
 }
+// TARUNA WORK ENDS//////////////////////////////////////////////////////////////////////////////////////////////// 
+
+
+// RILEY CODE STARTS//////////////////////////////////////////////////////////////////////////////////////////////
+
+function init() {
+  //Call url needed for menu
+  // url = 'http://127.0.0.1:5000/mortalityrate';
+  // Making dropdown menu
+  let dropdownMenu = d3.select("#selDataset");
+  d3.json(url2).then(function (data) {
+    let first = data;
+    data.forEach((document) => {
+      console.log(document["_id"]);
+      // Adds samples to dropdown menu
+      dropdownMenu.append("option")
+        .text(document["_id"])
+        .property("value", document["_id"]);
+    });
+    let sample_one = first[0]["_id"];
+    console.log(sample_one);
+    // Functions for all sections
+    startHeatMap();
+    startChart2(sample_one);
+    startChart3(sample_one);
+  })
+}
+function optionChanged(value) {
+  startChart2(value);
+  startChart3(value)
+}
+// RILEY CODE ENDS//////////////////////////////////////////////////////////////////////////////////////////////
+
+// JIBEKS CODE STARTS//////////////////////////////////////////////////////////////////////////////////////////
+
+// Calling the functions
+
+// Vaccination code
+function vaccinations() {
+  d3.json(url3)
+    .then(data => {
+      console.log(data);
+      // Declare arrays for province and vaccinations
+      var provinces = [];
+      var vaccinations = [];
+      // Iterate over the array of documents
+      data.forEach(document => {
+        var vaccination = document["cumm_vaccinated_people"]; // Fix variable name here
+        var province = document["_id"];
+        console.log("Vaccinated People:", vaccination);
+        console.log("Province:", province);
+        // Push values to respective arrays
+        provinces.push(province);
+        vaccinations.push(vaccination);
+      });
+      // Update the trace object
+      const updatedTrace = {
+        x: provinces,
+        y: vaccinations,
+        type: 'bar',
+        orientation: 'v',
+        width: 0.8,
+        marker: {
+          color: 'rgba(0, 128, 0, 0.8)'
+        }
+      };
+      // Update the data array
+      const updatedData = [updatedTrace];
+      // Update the layout object
+      const updatedLayout = {
+        title: 'Vaccinated People by Province',
+        xaxis: {
+          title: 'Province'
+        },
+        yaxis: {
+          title: 'Vaccinated People',
+          automargin: true,
+          title_standoff: 50
+        }
+      };
+      // Update the chart
+      Plotly.newPlot('plot2', updatedData, updatedLayout);
+    })
+    .catch(error => {
+      console.log('Error loading data:', error);
+    });
+}
+// JIBEK CODE ENDS////////////////////////////////////////////////////////////////////////////////////////////////

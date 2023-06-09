@@ -20,10 +20,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-2">
+      <div class="col-md-7">
+        <div id="plot"></div>
+      </div>
+      <div class="col-md-5">
         <div class="well">
-          <h5>Test Subject ID No.:</h5>
-          <select id="selDataset" onchange="optionChanged(this.value)">
+          <h5>Province:</h5>
+          <select id="provinceDropdown" onchange="updateVaccineNumbers(this.value)">
+          </select>          
           </select>
         </div>
         <div class="panel panel-primary">
@@ -33,25 +37,14 @@
           <div id="sample-metadata" class="panel-body"></div>
         </div>
       </div>
-      <div class="col-md-5">
-        <div id="bar"></div>
-        <div id="plot"></div>
-      </div>
-      <div class="col-md-5">
-        <div id="gauge"></div>
-      </div>
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div id="bubble"></div>
+        <div id="plot3"></div>
       </div>
     </div>
   </div>
-  <!-- <div id="plot"></div> -->
-  <div id="plot2"></div>
   <script src="./static/js/app.js"></script>
-  <!-- <script src="./static/js/bonus.js"></script> -->
-  
 </body>
 
 </html>
