@@ -216,32 +216,73 @@ function pie_age() {
 
 // RILEY CODE STARTS//////////////////////////////////////////////////////////////////////////////////////////////
 
+// function init() {
+//   //Call url needed for menu
+//   // url = 'http://127.0.0.1:5000/mortalityrate';
+//   // Making dropdown menu
+//   let dropdownMenu = d3.select("#selDataset");
+//   d3.json(url2).then(function (data) {
+//     let first = data;
+//     data.forEach((document) => {
+//       console.log(document["_id"]);
+//       // Adds samples to dropdown menu
+//       dropdownMenu.append("option")
+//         .text(document["_id"])
+//         .property("value", document["_id"]);
+//     });
+//     let sample_one = first[0]["_id"];
+//     console.log(sample_one);
+//     // Functions for all sections
+//     startHeatMap();
+//     startChart2(sample_one);
+//     startChart3(sample_one);
+//   })
+// }
+// function optionChanged(value) {
+//   startChart2(value);
+//   startChart3(value)
+// }
 function init() {
-  //Call url needed for menu
+  // Call URL needed for menu
   // url = 'http://127.0.0.1:5000/mortalityrate';
+
   // Making dropdown menu
   let dropdownMenu = d3.select("#selDataset");
-  d3.json(url2).then(function (data) {
-    let first = data;
+
+  d3.json(url2).then(function(data) {
+    let provinces = [];
+
+    // Extract distinct provinces from the data
     data.forEach((document) => {
-      console.log(document["_id"]);
-      // Adds samples to dropdown menu
-      dropdownMenu.append("option")
-        .text(document["_id"])
-        .property("value", document["_id"]);
+      if (!provinces.includes(document["Province"])) {
+        provinces.push(document["Province"]);
+      }
     });
-    let sample_one = first[0]["_id"];
+
+    // Add distinct provinces to the dropdown menu
+    provinces.forEach((province) => {
+      dropdownMenu
+        .append("option")
+        .text(province)
+        .property("value", province);
+    });
+
+    // Get the first province from the data
+    let sample_one = provinces[0];
     console.log(sample_one);
+
     // Functions for all sections
     startHeatMap();
     startChart2(sample_one);
     startChart3(sample_one);
-  })
+  });
 }
+
 function optionChanged(value) {
   startChart2(value);
-  startChart3(value)
+  startChart3(value);
 }
+
 // RILEY CODE ENDS//////////////////////////////////////////////////////////////////////////////////////////////
 
 // JIBEKS CODE STARTS//////////////////////////////////////////////////////////////////////////////////////////
