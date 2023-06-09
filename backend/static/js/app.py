@@ -144,7 +144,6 @@ def vaccine_data():
     results = list(dataset_3.aggregate(pipeline))
     return jsonify(results)
 
-
 def convert_object_id(result):
     result['_id'] = str(result['_id'])
     return result

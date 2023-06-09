@@ -5,6 +5,7 @@ const url4 = 'http://127.0.0.1:5000/age'
 // Calling the functions
 mortality_new();
 pie_age();
+init();
 
 // Ploting the graphs using plotly and Chart.JS
 function mortality_new() {
@@ -210,11 +211,9 @@ function mortality_new() {
 // TARUNA WORK ENDS//////////////////////////////////////////////////////////////////////////////////////////////// 
 
 
-
-
 function init() {
     //Call url needed for menu
-    url = 'http://127.0.0.1:5000/mortality_rate';
+    // url = 'http://127.0.0.1:5000/mortality_rate';
     // Making dropdown menu
     let dropdownMenu = d3.select("#selDataset");
     d3.json(url).then(function(data) {
@@ -240,4 +239,3 @@ function optionChanged(value) {
     startChart2(value);
     startChart3(value)
 }
-init()
