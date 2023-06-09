@@ -18,6 +18,17 @@
         <h1>Belly Button Biodiversity Dashboard</h1>
         <p>Use the interactive charts below to explore the dataset</p>
       </div>
+        <!-- Add a container for the chart -->
+  <div id="chart-container"></div>
+  <!-- Add a dropdown menu for sorting -->
+  <label for="sort-dropdown">Sort Order:</label>
+  <select id="sort-dropdown" onchange="changeOrder(this.value)">
+    <option value="ascending">Ascending</option>
+    <option value="descending">Descending</option>
+  </select>
+  <div id="plot2"></div>
+  <div id="chart-container2">
+    <canvas id="myChart"></canvas>
     </div>
     <div class="row">
       <div class="col-md-7">
@@ -28,7 +39,6 @@
           <h5>Province:</h5>
           <select id="provinceDropdown" onchange="updateVaccineNumbers(this.value)">
           </select>          
-          </select>
         </div>
         <div class="panel panel-primary">
           <div class="panel-heading">

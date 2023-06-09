@@ -1,14 +1,140 @@
 // Define the URL for the JSON file
-const url = 'http://127.0.0.1:5000/vaccinated_people_province';
-const url2='http://127.0.0.1:5000/vaccines'
+const url = 'http://127.0.0.1:5000/mortality_rate';
+const url3 = 'http://127.0.0.1:5000/vaccinated_people_province';
+const url4 = 'http://127.0.0.1:5000/age';
+const url5='http://127.0.0.1:5000/vaccines'
 
 // Calling the functions
 vaccinations();
 vaccines();
 fetchVaccinatedData();
+mortality_new();
 
-function vaccinations() {
+//taruna's
+// Ploting the graphs using plotly and Chart.JS
+function mortality_new() {
   d3.json(url)
+    .then(data => {
+      console.log(data);
+
+      // Declare arrays for province and mortality rate
+      var provinces = [];
+      var mortalityRates = [];
+
+      // Iterate over the array of documents
+      data.forEach(document => {
+        var mortalityRate = document["Mortality rate"];
+        var province = document["Province"];
+        console.log("Mortality rate:", mortalityRate);
+        console.log("Province:", province);
+
+        // Push values to respective arrays
+        provinces.push(province);
+        mortalityRates.push(mortalityRate);
+      });
+
+      // Create a container for the chart
+      const chartContainer = d3.select('#chart-container');
+
+      // Create the initial chart
+      createChart(provinces, mortalityRates);
+
+      // Function to create the chart
+      function createChart(provinces, mortalityRates) {
+        // Update the trace object
+        const trace = {
+          x: provinces,
+          y: mortalityRates,
+          type: 'bar',
+          orientation: 'v',
+          width: 0.8,
+          marker: {
+            color: 'rgba(0, 128, 0, 0.8)'
+          }
+        };
+
+        // Create the data array
+        const data = [trace];
+
+        // Create the layout object
+        const layout = {
+          title: 'Mortality Rate by Province',
+          xaxis: {
+            title: 'Province',
+          },
+          yaxis: {
+            title: 'Mortality Rate',
+            automargin: true,
+            title_standoff: 50,
+          },
+        };
+
+        // Update the chart
+        Plotly.newPlot('chart-container', data, layout);
+      }
+
+      const sortDropdown = document.getElementById('sort-dropdown');
+      sortDropdown.onchange = function () {
+        const selectedOption = this.value;
+        console.log('Selected option:', selectedOption);
+        let sortedData = [...data];
+
+        // Perform actions based on the selected option
+        if (selectedOption === 'ascending') {
+          // Handle ascending option
+          sortedData.sort((a, b) => a["Mortality rate"] - b["Mortality rate"]);
+        } else if (selectedOption === 'descending') {
+          // Handle descending option
+          sortedData.sort((a, b) => b["Mortality rate"] - a["Mortality rate"]);
+        }
+
+        const sortedProvinces = sortedData.map(document => document["Province"]);
+        const sortedMortalityRates = sortedData.map(document => document["Mortality rate"]);
+
+        updateChart(sortedProvinces, sortedMortalityRates);
+      };
+    })
+    .catch(error => {
+      console.log('Error loading data:', error);
+    });
+
+  // Function to update the chart
+  function updateChart(newProvinces, newMortalityRates) {
+    console.log(newMortalityRates);
+    // Update the trace and data arrays
+    const trace = {
+      x: newProvinces,
+      y: newMortalityRates,
+      type: 'bar',
+      orientation: 'v',
+      width: 0.8,
+      marker: {
+        color: 'rgba(0, 128, 0, 0.8)'
+      }
+    };
+    // Create the data array
+    const data = [trace];
+
+    // Create the layout object
+    const layout = {
+      title: 'Mortality Rate by Province',
+      xaxis: {
+        title: 'Province',
+      },
+      yaxis: {
+        title: 'Mortality Rate',
+        automargin: true,
+        title_standoff: 50,
+      },
+    };
+
+    // Update the chart
+    Plotly.react('chart-container', data, layout);
+  }
+}
+// jibeka's
+function vaccinations() {
+  d3.json(url3)
     .then(data => {
       console.log(data);
       // Declare arrays for province and vaccinations
@@ -37,7 +163,6 @@ function vaccinations() {
       };
       // Update the data array
       const updatedData = [updatedTrace];
-      // Update the layout object
 // Update the layout object
 const updatedLayout = {
   title: 'Vaccinated People by Province',
@@ -68,7 +193,7 @@ var vaccines = [];
 var dates = [];
 
 function vaccines() {
-  d3.json(url2)
+  d3.json(url5)
     .then(data => {
       console.log(data);
 
@@ -138,7 +263,7 @@ var vaccinatedNumbers = [];
 var vaccinatedDates = [];
 
 function fetchVaccinatedData() {
-  d3.json(url2)
+  d3.json(url5)
     .then(data => {
       console.log(data);
 
