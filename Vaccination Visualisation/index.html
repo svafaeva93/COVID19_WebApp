@@ -23,7 +23,9 @@
       <div class="col-md-2">
         <div class="well">
           <h5>Province:</h5>
-          <select id="provinceDropdown" onchange="updateChart(selectedDate)">
+          <select id="provinceDropdown" onchange="updateVaccineNumbers(this.value, document.getElementById('dropdown').value)">
+          </select>
+          
           </select>
         </div>
         <div class="panel panel-primary">
