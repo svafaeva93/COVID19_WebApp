@@ -8,7 +8,6 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-
 # Define your credentials and DBname
 client = MongoClient(f'mongodb+srv://{username}:{password}@cluster0.mymgc5e.mongodb.net/')
 
@@ -122,7 +121,7 @@ def vaccines_ages():
     return jsonify(results_list)
 # TARUNA CODE API ROUTES////////////////////////////////////////////////////////////////////////////////////ENDING
 
-
+# JIBEK CODE API ROUTES////////////////////////////////////////////////////////////////////////////////STARTS
 #Vaccination per Province 
 @app.route("/vaccinated_people_province")
 def vaccine_data():
@@ -143,6 +142,7 @@ def vaccine_data():
 
     results = list(dataset_3.aggregate(pipeline))
     return jsonify(results)
+# JIBEK CODE API ROUTES////////////////////////////////////////////////////////////////////////////////ENDS
 
 def convert_object_id(result):
     result['_id'] = str(result['_id'])
