@@ -29,37 +29,6 @@ dataset_3 = db['dataset_3']
 def main_page():
     return "<h2>Main Page for Flask API</h2>"
 
-#Confirmed Cases per Day 
-@app.route("/daily_cases")
-def daily_confirmed_data():
-    query = {}
-    fields = {'Province':1, 'Date':1, 'Confirmed cases per day':1}
-    results = dataset_1.find(query, fields)
-    output_list = [convert_object_id(result) for result in results]
-
-    return jsonify(output_list)
-
-#Cumulative Confirmed by Province 
-@app.route("/cumulative_cases_province")
-def confirmed_data():
-    pipeline = [
-        {
-            '$group': {
-                '_id': '$Province',
-                'cum_confirmed_cases': { '$sum': '$Cumulative confirmed cases' }
-            }
-        },
-        {
-            '$sort': {
-                'cum_confirmed_cases': -1,
-                'Date':-1
-            }
-        }
-    ]
-
-    results = list(dataset_1.aggregate(pipeline))
-    return jsonify(results)
-
 # TARUNA CODE API ROUTES////////////////////////////////////////////////////////////////////////////////////STARTING
 #Mortality Rate by Province 
 @app.route("/mortality_rate")
@@ -143,6 +112,48 @@ def vaccine_data():
     results = list(dataset_3.aggregate(pipeline))
     return jsonify(results)
 # JIBEK CODE API ROUTES////////////////////////////////////////////////////////////////////////////////ENDS
+
+# RILEY CODE API ROUTE STARTS //////////////////////////////////////////////////////////////////////////
+@app.route("/mortalityrate")
+def mortality():
+    query = {}
+    fields = {'Province':1, 'Date':1, 'Mortality rate':1}
+    results = dataset_1.find(query, fields)
+    results_list = [convert_object_id(result) for result in results]
+
+    return jsonify(results_list)
+# RILEY CODE API ROUTE ENDS //////////////////////////////////////////////////////////////////////////
+
+#Confirmed Cases per Day 
+@app.route("/daily_cases")
+def daily_confirmed_data():
+    query = {}
+    fields = {'Province':1, 'Date':1, 'Confirmed cases per day':1}
+    results = dataset_1.find(query, fields)
+    output_list = [convert_object_id(result) for result in results]
+
+    return jsonify(output_list)
+
+#Cumulative Confirmed by Province 
+@app.route("/cumulative_cases_province")
+def confirmed_data():
+    pipeline = [
+        {
+            '$group': {
+                '_id': '$Province',
+                'cum_confirmed_cases': { '$sum': '$Cumulative confirmed cases' }
+            }
+        },
+        {
+            '$sort': {
+                'cum_confirmed_cases': -1,
+                'Date':-1
+            }
+        }
+    ]
+
+    results = list(dataset_1.aggregate(pipeline))
+    return jsonify(results)
 
 def convert_object_id(result):
     result['_id'] = str(result['_id'])
