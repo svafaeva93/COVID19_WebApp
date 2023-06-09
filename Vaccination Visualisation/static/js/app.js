@@ -1,10 +1,8 @@
 // Define the URL for the JSON file
 const url = 'http://127.0.0.1:5000/vaccinated_people_province';
 const url2='http://127.0.0.1:5000/vaccines'
-const url3 = 'http://127.0.0.1:5000/dropdown_province';
 
 // Calling the functions
-// loadOptions();
 // vaccinations();
 vaccines();
 
@@ -69,10 +67,10 @@ function vaccines() {
 
       // Iterate over the array of documents
       data.forEach(document => {
-        var vaccination = document["Cumulative percent of people (Vaccinedose1)"]; // Fix variable name here
+        var vaccination = document["Cumulative number of people (Vaccinedose1)"]; 
         var province = document["Province"];
         var date = new Date(document["Date"]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        console.log("Vaccinated %:", vaccination);
+        console.log("Vaccinated", vaccination);
         console.log("Date:", date);
         console.log("Province:", province);
         // Push values to respective arrays
@@ -91,9 +89,9 @@ function vaccines() {
         var filteredVaccinations = [];
        // Filter the data based on the selected date
        data.forEach(document => {
-        if (document["date"] === selectedDate) {
-          filteredProvinces.push(document["province"]);
-          filteredVaccinations.push(document["vaccination"]);
+        if (new Date(document["Date"]).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) === selectedDate) {
+          filteredProvinces.push(document["Province"]);
+          filteredVaccinations.push(document["Cumulative number of people (Vaccinedose1)"]);
         }
       });
           // Update the trace object
@@ -111,7 +109,7 @@ function vaccines() {
       const updatedData = [updatedTrace];
       // Update the layout object
       const updatedLayout = {
-        title: 'Vaccinated % People by Province',
+        title: 'Vaccinated People by Province',
         xaxis: {
           title: 'Vaccinated People'
         },
@@ -143,22 +141,4 @@ function vaccines() {
 
 
 
-
-
-
-// // function loadOptions() {
-//   d3.json(url3)
-//     .then(data => {
-//       console.log(data);
-//       var options = data;
-//       var select = document.getElementById("selDataset");
-//       for (var i = 0; i < options.length; i++) {
-//         var option = document.createElement("option");
-//         option.text = options[i];
-//         select.add(option);
-//       }
-//     })
-//     .catch(error => {
-//       console.log('Error loading data:', error);
-//     });
 
