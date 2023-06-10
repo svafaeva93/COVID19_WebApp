@@ -53,3 +53,5 @@ Mortality Visualization/static/js/credentials.py
 
 # Exclude DS_Store file
 **/.DS_Store
+backend/static/js/credentials.py
+.DS_Store
