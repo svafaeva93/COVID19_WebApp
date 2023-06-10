@@ -1,6 +1,6 @@
 from flask import Flask, request, Response, jsonify, abort
 from pymongo import MongoClient
-from credentials import username, password
+from static.js.credentials import username, password
 import json
 from pprint import pprint
 from flask_cors import CORS
