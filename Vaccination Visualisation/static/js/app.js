@@ -5,40 +5,35 @@ const url4 = 'http://127.0.0.1:5000/age';
 const url5='http://127.0.0.1:5000/vaccines'
 
 // Calling the functions
+mortality_new();
 vaccinations();
 vaccines();
 fetchVaccinatedData();
-mortality_new();
+pie_age();
 
-//taruna's
-// Ploting the graphs using plotly and Chart.JS
+////taruna's
+//Ploting the graphs using plotly and Chart.JS
 function mortality_new() {
   d3.json(url)
     .then(data => {
       console.log(data);
-
       // Declare arrays for province and mortality rate
       var provinces = [];
       var mortalityRates = [];
-
       // Iterate over the array of documents
       data.forEach(document => {
         var mortalityRate = document["Mortality rate"];
         var province = document["Province"];
         console.log("Mortality rate:", mortalityRate);
         console.log("Province:", province);
-
         // Push values to respective arrays
         provinces.push(province);
         mortalityRates.push(mortalityRate);
       });
-
       // Create a container for the chart
       const chartContainer = d3.select('#chart-container');
-
       // Create the initial chart
       createChart(provinces, mortalityRates);
-
       // Function to create the chart
       function createChart(provinces, mortalityRates) {
         // Update the trace object
@@ -52,10 +47,8 @@ function mortality_new() {
             color: 'rgba(0, 128, 0, 0.8)'
           }
         };
-
         // Create the data array
         const data = [trace];
-
         // Create the layout object
         const layout = {
           title: 'Mortality Rate by Province',
@@ -67,8 +60,9 @@ function mortality_new() {
             automargin: true,
             title_standoff: 50,
           },
+          width: 700, // Adjust the width of the hbar chart here
+          height: 500 // Adjust the height of the hbar chart here
         };
-
         // Update the chart
         Plotly.newPlot('chart-container', data, layout);
       }
@@ -114,7 +108,6 @@ function mortality_new() {
     };
     // Create the data array
     const data = [trace];
-
     // Create the layout object
     const layout = {
       title: 'Mortality Rate by Province',
@@ -142,7 +135,7 @@ function vaccinations() {
       var vaccinations = [];
       // Iterate over the array of documents
       data.forEach(document => {
-        var vaccination = document["cumm_vaccinated_people"]; // Fix variable name here
+        var vaccination = document["cumm_vaccinated_people"]; 
         var province = document["_id"];
         console.log("Vaccinated People:", vaccination);
         console.log("Province:", province);
@@ -187,7 +180,6 @@ Plotly.newPlot('plot', updatedData, updatedLayout);
       console.log('Error loading data:', error);
     });
 }
-// Declare global variables for provinces, vaccines, and dates
 var provinces = [];
 var vaccines = [];
 var dates = [];
@@ -196,7 +188,6 @@ function vaccines() {
   d3.json(url5)
     .then(data => {
       console.log(data);
-
       // Iterate over the array of documents
       data.forEach(document => {
         var vaccination = document["Cumulative number of people (Vaccinedose1)"];
@@ -209,13 +200,11 @@ function vaccines() {
         console.log("Vaccinated", vaccination);
         console.log("Date:", date);
         console.log("Province:", province);
-
         // Push values to respective arrays
         provinces.push(province);
         vaccines.push(vaccination);
         dates.push(date);
       });
-
       // Create the province dropdown menu
       var provinceDropdown = d3.select("#provinceDropdown");
       var uniqueProvinces = Array.from(new Set(provinces)); // Get unique provinces
@@ -331,4 +320,80 @@ Plotly.newPlot('plot3', data, layout);
 .catch(error => {
   console.log('Error loading data:', error);
 });
+}
+// // //taruna's
+function pie_age() {
+  d3.json(url4)
+    .then(data => {
+      console.log(data);
+      // Declare arrays for vaccine and Age
+      var totalVaccinedoses1 = [];
+      var ages = [];
+      // Iterate over the array of documents
+      data.forEach(document => {
+        var totalVaccinedose1 = document["TotalVaccinedose1"];
+        var age = document["Age"];
+        console.log("TotalVaccinedose1:", totalVaccinedose1);
+        console.log("Age:", age);
+        totalVaccinedoses1.push(totalVaccinedose1);
+        ages.push(age);
+      });
+      // Create the pie chart
+      const ctx = document.getElementById('myChart').getContext('2d');
+      const myChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ages,
+          datasets: [{
+            data: totalVaccinedoses1,
+            backgroundColor: ['red', 'green', 'blue', 'orange', 'purple', 'yellow', 'cyan', 'magenta', 'teal'],
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 10,
+              bottom: 10,
+              left: 10,
+              right: 10
+            }
+          },
+          plugins: {
+            title: {
+              display: true,
+              text: 'Vaccine Distribution by Age Group',
+              font: {
+                size: 18
+              }
+            },
+            legend: {
+              position: 'top',
+              align: 'center',
+              fullSize: false,
+              labels: {
+                boxWidth: 15,
+              },
+            },
+            tooltip: {
+              callbacks: {
+                title: () => '', // Empty string to hide the initial age number
+                label: (context) => {
+                  const label = context.label;
+                  const value = context.raw;
+                  const formattedLabel = `Age: ${label}`;
+                  const formattedValue = `Vaccinated people for dose1: ${value}`;
+                  return [formattedLabel, formattedValue];
+                }
+              }
+            }
+          }
+        }
+      });
+      // Adjust the size of the chart's canvas
+      const chartCanvas = document.querySelector('#myChart');
+      chartCanvas.style.width = '400px';
+      chartCanvas.style.height = '400px';
+    });
 }
