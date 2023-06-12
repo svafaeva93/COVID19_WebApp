@@ -1,12 +1,12 @@
-from flask import Flask, request, Response, jsonify, abort
+from flask import Flask, request, Response, jsonify, abort, render_template
 from pymongo import MongoClient
 from credentials import username, password
 import json
 from pprint import pprint
-from flask_cors import CORS
+
 
 app = Flask(__name__)
-CORS(app)
+
 
 # Define your credentials and DBname
 client = MongoClient(
@@ -30,7 +30,7 @@ dataset_3 = db['dataset_3']
 
 @app.route("/")
 def main_page():
-    return "<h2>Main Page for Flask API</h2>"
+    return render_template('index.html')
 
 # Confirmed Cases per Day
 
@@ -44,7 +44,6 @@ def confirmed_data():
     return jsonify(output_list)
 
 
-@app.route("/dropdown_province")
 @app.route("/dropdown_province")
 def dropdown_province_data():
     collection = db['dataset_1']
@@ -124,7 +123,7 @@ def vaccine_rate():
 # Vaccines based on age and gender
 
 
-@app.route("/gender&age")
+@app.route("/gender_age")
 def vaccines():
     collection = db['dataset_2']
     # Define the grouping pipeline

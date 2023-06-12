@@ -1,8 +1,8 @@
 // Define the URL for the JSON file
-const url = 'http://127.0.0.1:5000/mortality_rate';
-const url2 = 'http://127.0.0.1:5000/gender&age';
-const url3 = 'http://127.0.0.1:5000/dropdown_province'
-const url4 = 'http://127.0.0.1:5000/age'
+const url = '/mortality_rate' // 'http://127.0.0.1:5000/mortality_rate';
+const url2 = '/gender_age' //'http://127.0.0.1:5000/gender&age';
+const url3 = '/dropdown_province' //'http://127.0.0.1:5000/dropdown_province'
+const url4 = '/age' //http://127.0.0.1:5000/age'
 
 // Functions for each questions asked:
 // calling function which connects the "selDataset" element with the names array from data
