@@ -4,11 +4,7 @@ body {
     margin: 0;
   }
   
-  #map,
-  body,
-  html {
-    height: 100%;
-  }
+  #map {height: 180 px;}
   
   .leaflet-popup-content {
     text-align: center;
