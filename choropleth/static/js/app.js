@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (provinceData) {
         var cases = provinceData.cum_confirmed_cases;
         // Calculate the color based on the confirmed cases
-        var colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, maxConfirmedCases]); // Adjust the color scale as needed
+        var colorScale = d3.scaleSequential(d3.interpolateGreens).domain([0, maxConfirmedCases]); // Adjust the color scale as needed
         color = colorScale(cases);
       }
 
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
       div.innerHTML = "<h2>Legend</h2>";
 
       // Add the legend items
-      let colors = d3.schemeReds[9]; // Color scale
+      let colors = d3.schemeGreens[9]; // Color scale
       var legendInfo = maxConfirmedCases / 9; 
       for (let i = 0; i < colors.length; i++) {
         labels.push(
