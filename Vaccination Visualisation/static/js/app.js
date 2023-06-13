@@ -58,9 +58,9 @@ function mortality_new() {
           yaxis: {
             title: 'Mortality Rate',
             automargin: true,
-            title_standoff: 50,
+            title_standoff: 100,
           },
-          width: 700, // Adjust the width of the hbar chart here
+          width: 800, // Adjust the width of the hbar chart here
           height: 500 // Adjust the height of the hbar chart here
         };
         // Update the chart
@@ -151,7 +151,7 @@ function vaccinations() {
         orientation: 'h',
         width: 0.8,
         marker: {
-          color: 'rgba(0, 128, 0, 0.8)'
+          color: '#337ab7'
         }
       };
       // Update the data array
@@ -292,7 +292,7 @@ function fetchVaccinatedData() {
         y: sortedVaccinatedNumbers,
         type: 'bar',
         marker: {
-          color: 'rgba(0, 128, 0, 0.8)'
+          color: 'rgba(128, 0, 128, 0.8)'
         }
       };
 
@@ -310,8 +310,8 @@ var layout = {
     title: 'Vaccinated People',
     tickformat: ',.0f' // Format the y-axis tick labels with commas as thousands separators
   },
-  width: 600, // Set the desired width in pixels
-  height: 600 // Set the desired height in pixels
+  width: 800, // Set the desired width in pixels
+  height: 500 // Set the desired height in pixels
 };
 
 // Plot the chart
