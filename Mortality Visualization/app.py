@@ -112,6 +112,8 @@ def convert_object_id(result):
     return result
 
 # Vaccination
+
+
 @app.route("/vaccines")
 def vaccine_rate():
     query = {}
@@ -171,19 +173,21 @@ def vaccines_ages():
         {
             "$group": {
                 "_id": "$Age",
-                "TotalVaccinedose1": {"$sum": "$Cumulative number of people (Vaccinedose1)"}
+                "TotalVaccinedose1": {"$max": "$Cumulative number of people (Vaccinedose1)"},
+                "Date": {"$max": "$Date"}
             }
         },
         {
             "$project": {
                 "_id": 0,
                 "Age": "$_id",
-                "TotalVaccinedose1": 1
+                "TotalVaccinedose1": 1,
+                "Date": 1
             }
         },
         {
             "$sort": {
-                "Age": 1
+                "TotalVaccinedose1": 1
             }
         }
     ]
