@@ -5,6 +5,7 @@ import json
 from pprint import pprint
 
 app = Flask(__name__)
+app.use_static_for = '/static'
 
 # Define your credentials and DBname
 client = MongoClient(f'mongodb+srv://{username}:{password}@cluster0.mymgc5e.mongodb.net/')
