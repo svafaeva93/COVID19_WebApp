@@ -1,8 +1,8 @@
 // Define the URL for the JSON file
-const url = 'http://127.0.0.1:5000/mortality_rate';
-const url3 = 'http://127.0.0.1:5000/vaccinated_people_province';
-const url4 = 'http://127.0.0.1:5000/age';
-const url5='http://127.0.0.1:5000/vaccines'
+const url = '/mortality_rate';
+const url3 = '/vaccinated_people_province';
+const url4 = '/age';
+const url5='/vaccines'
 
 // Calling the functions
 mortality_new();
