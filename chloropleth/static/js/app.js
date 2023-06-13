@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Add the legend items
       let colors = d3.schemeReds[9]; // Color scale
-      var legendInfo = maxConfirmedCases / 9; // Divide the max value by the number of legend items
+      var legendInfo = maxConfirmedCases / 9; 
       for (let i = 0; i < colors.length; i++) {
         labels.push(
           '<li style="background-color:' + colors[i] + '"></li> ' +
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Generate the content for the popup
       var popupContent = "<h1>" + feature.properties.name + "</h1>";
       if (provinceData) {
-        popupContent += "<h2>Confirmed Cases: " + provinceData.cum_confirmed_cases + "</h2>";
+        popupContent += "<h2>Cumulative Confirmed Cases: " + provinceData.cum_confirmed_cases + "</h2>";
       } else {
         popupContent += "<h2>No data available</h2>";
       }

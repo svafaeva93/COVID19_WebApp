@@ -39,25 +39,27 @@ def daily_confirmed_data():
     return jsonify(output_list)
 
 #Cumulative Confirmed by Province 
+
 @app.route("/cumulative_cases_province")
 def confirmed_data():
     pipeline = [
         {
             '$group': {
                 '_id': '$Province',
-                'cum_confirmed_cases': { '$sum': '$Cumulative confirmed cases' }
+                'cum_confirmed_cases': { '$max': '$Cumulative confirmed cases' },
+                'date': { '$max': '$Date' }
             }
         },
         {
             '$sort': {
-                'cum_confirmed_cases': -1,
-                'Date':-1
+                'cum_confirmed_cases': 1
             }
         }
     ]
 
     results = list(dataset_1.aggregate(pipeline))
     return jsonify(results)
+
 
 
 #Mortality Rate Data
@@ -98,7 +100,7 @@ def vaccine_data():
         {
             '$group': {
                 '_id': '$Province',
-                'cumm_vaccinated_people': { '$sum': '$Cumulative number of people (Vaccinedose1)' }
+                'cumm_vaccinated_people': { '$max': '$Cumulative number of people (Vaccinedose1)' }
             }
         },
         {
