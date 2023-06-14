@@ -22,6 +22,7 @@ print(db.list_collection_names())
 dataset_1 = db['dataset_1']
 dataset_2 = db['dataset_2']
 dataset_3 = db['dataset_3']
+dataset_4 = db['dataset_4_updated_dataset_2']
 
 #Welcome Page 
 @app.route("/")
@@ -61,20 +62,21 @@ def mortality_data():
 
 @app.route("/age")
 def vaccines_ages():
-    collection = db['dataset_2']
+    collection = db['dataset_4_updated_dataset_2']
     # Define the grouping pipeline
     pipeline = [
         {
             "$group": {
                 "_id": "$Age",
-                "TotalVaccinedose1": {"$sum": "$Cumulative number of people (Vaccinedose1)"}
+                "TotalVaccinedose1": {"$max": "$Cumulative number of people (Vaccinedose1)"},
+                "Date": {"$max": "$Date"}
             }
         },
         {
             "$project": {
                 "_id": 0,
                 "Age": "$_id",
-                "TotalVaccinedose1": 1
+                "TotalVaccinedose1": "$TotalVaccinedose1"
             }
         },
         {
@@ -97,13 +99,13 @@ def vaccine_data():
         {
             '$group': {
                 '_id': '$Province',
-                'cumm_vaccinated_people': { '$sum': '$Cumulative number of people (Vaccinedose1)' }
+                'cumm_vaccinated_people': {'$max': '$Cumulative number of people (Vaccinedose1)'},
+                "Date": {"$max": "$Date"}
             }
         },
         {
             '$sort': {
-                'cumm_vaccinated_people': -1,
-                'Date':-1
+                'cumm_vaccinated_people': 1,
             }
         }
     ]
