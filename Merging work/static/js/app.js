@@ -337,8 +337,8 @@ function vaccinations() {
       });
       // Update the trace object
       const updatedTrace = {
-        y: provinces.reverse(),
-        x: vaccinations.reverse(),
+        y: provinces,
+        x: vaccinations,
         type: 'bar',
         orientation: 'h',
         width: 0.8,
@@ -359,7 +359,14 @@ const updatedLayout = {
   yaxis: {
     title: 'Province',
     automargin: true,
-    title_standoff: 50
+    title_standoff: 100
+  },
+  margin: {
+    t: 50, // Adjust the top margin here (reduce the value to bring the title closer)
+    r: 20,
+    b: 50,
+    l: 150,
+    pad: 0
   },
   width: 700, // Adjust the width of the hbar chart here
   height: 500 // Adjust the height of the hbar chart here
@@ -400,8 +407,15 @@ function vaccines() {
       // Create the province dropdown menu
       var provinceDropdown = d3.select("#provinceDropdown");
       var uniqueProvinces = Array.from(new Set(provinces)); // Get unique provinces
+      // Add the default option
+      provinceDropdown.append("option")
+      .attr("value", "")
+      .text("Choose the province");
+      // Add the remaining options
       uniqueProvinces.forEach(province => {
-        provinceDropdown.append("option").text(province);
+        provinceDropdown.append("option")
+          .attr("value", province)
+          .text(province);
       });
     })
     .catch(error => {
@@ -500,7 +514,7 @@ var layout = {
   },
   yaxis: {
     title: 'Vaccinated People',
-    tickformat: ',.0f' // Format the y-axis tick labels with commas as thousands separators
+    tickformat: '.1s' // Format the y-axis tick labels with commas as thousands separators
   },
   width: 800, // Set the desired width in pixels
   height: 500 // Set the desired height in pixels
