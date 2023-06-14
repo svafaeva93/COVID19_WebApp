@@ -1,0 +1,100 @@
+body {
+  background-color: #FFFFFF;
+}
+
+
+/* Center the heading and make it bold */
+.jumbotron h1 {
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Center the .jumbotron content using text-align */
+.jumbotron {
+  text-align: center;
+}
+
+/* Make the <p> tag bold */
+.jumbotron p {
+  font-weight: bold;
+}
+
+
+/* Style the sort dropdown */
+#sort-dropdown {
+  margin-bottom: 20px;
+}
+
+/* Style the chart container */
+#chart-container {
+  margin: 0 auto;
+  /* Center the chart horizontally */
+  max-width: 800px;
+  /* Increase the maximum width for the chart */
+}
+
+/* Style the well container */
+.well {
+  margin-bottom: 20px;
+}
+
+/* Style the panel container */
+.panel {
+  margin-bottom: 20px;
+}
+
+/* Add some spacing below the panel title */
+.panel-title {
+  margin-bottom: 10px;
+}
+
+/* Custom styles */
+.custom-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: rgb(232, 189, 189);
+}
+
+.custom-dropdown {
+  margin-right: 10px;
+}
+
+.custom-title {
+  font-size: 18px;
+  margin: 0;
+}
+
+.custom-dropdown h5 {
+  font-size: 18px;
+}
+
+.custom-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.custom-col {
+  flex: 1;
+  padding: 0 10px;
+}
+
+.custom-plot {
+  margin-bottom: 20px;
+}
+
+.custom-panel {
+  background-color: #337ab7;
+  color: white;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+#plot3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
