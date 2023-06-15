@@ -1,10 +1,12 @@
 Flask Project Readme
+
 Visualizing the Pandemic: A Data Analysis Approach to COVID-19 in Canada 
+
 Check here: https://covidcanada.fly.dev
 
 This repository contains our third project on COVID-19, where one can find visualized data presented in a web interactive app. As this was a group project everyones work was combined in one directory when finalizing. The final product is found in the folder named "Merging Work". 
 
-This readme provides an overview and instructions for setting up and running the Flask project with a Python backend and a JavaScript frontend using HTML and CSS.
+The readme provides an overview and instructions for setting up and running the Flask project with a Python backend and a JavaScript frontend using HTML and CSS.
 
 Project Structure
 The project structure follows a common layout for Flask projects:
