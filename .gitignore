@@ -49,7 +49,12 @@ Pipfile.lock
 
 # Ignore credentials file
 backend/credentials.py
-Mortality Visualization/static/js/credentials.py
+Mortality Visualization/credentials.py
+Vaccination Visualisation/credentials.py
+Merging work/credentials.py
+choropleth/credentials.py 
+frontend/credentials.py
+
 
 # Exclude DS_Store file
 **/.DS_Store
