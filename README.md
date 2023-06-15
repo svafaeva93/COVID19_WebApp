@@ -21,6 +21,7 @@ The project structure follows a common layout for Flask projects:
 *Note: while launching fly.io the name of app.py was changed to server.py;
 
 Setup
+
 Clone the repository or download the project files.
 
 1. Create and activate a virtual environment:
